@@ -3,9 +3,10 @@ import { motion } from "framer-motion";
 import { Title } from "@/components/ui/title";
 import { Input } from "@/components/ui/input";
 import { IconButton } from "@/components/ui/icon-button";
-import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
-import { Link, useNavigate } from "react-router-dom";
+import { ArrowRight } from "@phosphor-icons/react";
+import { useNavigate } from "react-router-dom";
 import { Goal } from "@/schemas/goal.schema";
+import { BackButton } from "@/components/ui/back-button";
 
 export function GoalStartPage() {
   const navigate = useNavigate();
@@ -17,15 +18,8 @@ export function GoalStartPage() {
       animate={{ opacity: 1, translateX: 0 }}
       exit={{ opacity: 0, translateX: -36 }}
     >
-      <div className="flex">
-        <Link
-          to="/"
-          className="flex items-center gap-2 -ml-6 text-lg text-slate-600"
-        >
-          <ArrowLeft />
-          Back to home
-        </Link>
-      </div>
+      <BackButton text="Back to home" to="/" />
+
       <form
         onSubmit={() => {
           navigate("/start/step");
@@ -39,7 +33,8 @@ export function GoalStartPage() {
               {...register("title")}
               label="My goal"
               srOnlyLabel
-              hintText="E.g. Become rich, lose weight, get a job"
+              placeholder="E.g. Become rich, lose weight, get a job"
+              hintText="Add one for now, you can add more later"
               autoFocus
             />
             <IconButton

@@ -4,14 +4,17 @@ import {
   useForm,
   useFormContext,
 } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { Title } from "@/components/ui/title";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { IconButton } from "@/components/ui/icon-button";
-import { ArrowLeft, Plus, Trash } from "@phosphor-icons/react";
+import { ArrowRight, Plus, Trash } from "@phosphor-icons/react";
 import { Goal } from "@/schemas/goal.schema";
-import { Task, TaskFrequencyEnum } from "@/schemas/task.schema";
+import { Task, TaskFrequencyEnum, TaskSchema } from "@/schemas/task.schema";
+import { BackButton } from "@/components/ui/back-button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "react-router-dom";
 
 export function TasksStartPage() {
@@ -23,9 +26,9 @@ export function TasksStartPage() {
   });
 
   const taskForm = useForm<Task>({
+    resolver: zodResolver(TaskSchema),
     defaultValues: {
       title: "",
-      description: "",
       frequency: "once",
     },
   });
@@ -45,15 +48,7 @@ export function TasksStartPage() {
       animate={{ opacity: 1, translateX: 0 }}
       exit={{ opacity: 0, translateX: -36 }}
     >
-      <div className="flex">
-        <Link
-          to="/start/step"
-          className="flex items-center gap-2 -ml-6 text-lg text-slate-600"
-        >
-          <ArrowLeft />
-          Change step
-        </Link>
-      </div>
+      <BackButton text="Change step" to="/start/step" />
       <div className="mt-8">
         <Title>
           What should you do to "{mainForm.getValues("steps.0.title")}
@@ -64,6 +59,7 @@ export function TasksStartPage() {
             <Input
               {...taskForm.register("title")}
               label="New Task"
+              placeholder="Small habits to finish the step"
               srOnlyLabel
               autoFocus
             />
@@ -91,56 +87,72 @@ export function TasksStartPage() {
             <IconButton
               type="submit"
               icon={Plus}
-              disabled={!taskForm.formState.isDirty}
+              disabled={taskForm.watch("title") === ""}
             />
           </form>
-          <div className="flex flex-col gap-2 mt-2">
-            <AnimatePresence>
-              {fields.map((field, index) => (
-                <motion.div
-                  key={field.id}
-                  initial={{ opacity: 0, translateY: -12 }}
-                  animate={{ opacity: 1, translateY: 0 }}
-                  exit={{ opacity: 0, translateX: 12 }}
-                  className="flex items-center gap-2 group"
-                >
-                  <Input
-                    {...mainForm.register(`steps.0.tasks.${index}.title`)}
-                    label={`Task #${index + 1}`}
-                    srOnlyLabel
-                  />
-                  <Controller
-                    control={mainForm.control}
-                    name={`steps.0.tasks.${index}.frequency`}
-                    shouldUnregister
-                    render={({
-                      field: { name, onBlur, onChange, ref, value },
-                    }) => (
-                      <Select
-                        ref={ref}
-                        name={name}
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        value={value}
-                        label="Frequency"
-                        options={TaskFrequencyEnum.options.map((option) => ({
-                          label: option,
-                          value: option,
-                        }))}
-                        placeholder="Frequency"
+          <div className="mt-2">
+            <ScrollArea className="h-72">
+              <div className="flex flex-col gap-2">
+                <AnimatePresence>
+                  {fields.map((field, index) => (
+                    <motion.div
+                      key={field.id}
+                      initial={{ opacity: 0, translateY: -12 }}
+                      animate={{ opacity: 1, translateY: 0 }}
+                      exit={{ opacity: 0, translateX: 12 }}
+                      className="flex items-center gap-2 pr-3 group"
+                    >
+                      <Input
+                        {...mainForm.register(`steps.0.tasks.${index}.title`)}
+                        label={`Task #${index + 1}`}
                         srOnlyLabel
-                        triggerClassName="w-36"
                       />
-                    )}
-                  />
-                  <IconButton
-                    icon={Trash}
-                    onClick={() => remove(index)}
-                    className="text-transparent group-hover:text-red-500 group-focus-within:text-red-500"
-                  />
-                </motion.div>
-              ))}
-            </AnimatePresence>
+                      <Controller
+                        control={mainForm.control}
+                        name={`steps.0.tasks.${index}.frequency`}
+                        render={({
+                          field: { name, onBlur, onChange, ref, value },
+                        }) => (
+                          <Select
+                            ref={ref}
+                            name={name}
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            value={value}
+                            label="Frequency"
+                            options={TaskFrequencyEnum.options.map(
+                              (option) => ({
+                                label: option,
+                                value: option,
+                              })
+                            )}
+                            placeholder="Frequency"
+                            srOnlyLabel
+                            triggerClassName="w-36"
+                          />
+                        )}
+                      />
+                      <IconButton
+                        icon={Trash}
+                        onClick={() => remove(index)}
+                        className="text-transparent group-hover:text-red-500 group-focus-within:text-red-500"
+                      />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            </ScrollArea>
+          </div>
+          <div className="flex justify-end mt-6">
+            <Link
+              to="/dashboard"
+              className="flex items-center gap-2 p-1 text-lg transition-all -mr-7 text-slate-600 hover:text-slate-800 group"
+            >
+              <span className="pb-1 -mb-1.5 border-b-2 border-transparent group-hover:border-slate-600">
+                Execute your plan
+              </span>
+              <ArrowRight />
+            </Link>
           </div>
         </div>
       </div>

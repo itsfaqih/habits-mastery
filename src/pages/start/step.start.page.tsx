@@ -1,11 +1,12 @@
 import { useFormContext } from "react-hook-form";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Title } from "@/components/ui/title";
 import { Input } from "@/components/ui/input";
 import { IconButton } from "@/components/ui/icon-button";
-import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
+import { ArrowRight } from "@phosphor-icons/react";
 import { Goal } from "@/schemas/goal.schema";
+import { BackButton } from "@/components/ui/back-button";
 
 export function StepStartPage() {
   const navigate = useNavigate();
@@ -17,15 +18,7 @@ export function StepStartPage() {
       animate={{ opacity: 1, translateX: 0 }}
       exit={{ opacity: 0, translateX: -36 }}
     >
-      <div className="flex">
-        <Link
-          to="/start"
-          className="flex items-center gap-2 -ml-6 text-lg text-slate-600"
-        >
-          <ArrowLeft />
-          Change goal
-        </Link>
-      </div>
+      <BackButton text="Change goal" to="/start" />
 
       <form
         onSubmit={() => {
@@ -40,6 +33,7 @@ export function StepStartPage() {
               {...register("steps.0.title")}
               label="First step"
               hintText="Anything that will move you closer to your goal"
+              placeholder="E.g. Invest, exercise, practice"
               srOnlyLabel
               autoFocus
             />

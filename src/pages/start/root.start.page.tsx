@@ -1,5 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Container } from "@/components/ui/container";
 import { Outlet } from "react-router-dom";
 import { Goal, GoalSchema } from "@/schemas/goal.schema";
@@ -8,6 +9,7 @@ import { setGoalAction } from "@/actions/goal.set.action";
 
 export function RootStartPage() {
   const formMethods = useForm<Goal>({
+    resolver: zodResolver(GoalSchema),
     async defaultValues() {
       const goals = await getGoalsAction();
 
