@@ -43,12 +43,14 @@ export function StepStartPage() {
               inputClassName="text-center sm:text-left"
               hintTextClassName="text-center sm:text-left"
             />
-            <IconButton
-              icon={ArrowRight}
-              type="submit"
-              disabled={watch("steps.0.title") === ""}
-              className="-mt-10 sr-only sm:not-sr-only"
-            />
+            <div className="sr-only sm:not-sr-only">
+              <IconButton
+                icon={ArrowRight}
+                type="submit"
+                disabled={watch("steps.0.title") === ""}
+                className="-mt-10"
+              />
+            </div>
           </div>
         </div>
       </form>
