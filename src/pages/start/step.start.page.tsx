@@ -18,7 +18,11 @@ export function StepStartPage() {
       animate={{ opacity: 1, translateX: 0 }}
       exit={{ opacity: 0, translateX: -36 }}
     >
-      <BackButton text="Change goal" to="/start" />
+      <BackButton
+        text="Change goal"
+        to="/start"
+        className="justify-center sm:justify-start"
+      />
 
       <form
         onSubmit={() => {
@@ -36,12 +40,14 @@ export function StepStartPage() {
               placeholder="E.g. Invest, exercise, practice"
               srOnlyLabel
               autoFocus
+              inputClassName="text-center sm:text-left"
+              hintTextClassName="text-center sm:text-left"
             />
             <IconButton
               icon={ArrowRight}
               type="submit"
               disabled={watch("steps.0.title") === ""}
-              className="-mt-10"
+              className="-mt-10 sr-only sm:not-sr-only"
             />
           </div>
         </div>

@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 export function LandingPage() {
   return (
-    <Container className="flex pt-48">
+    <Container className="flex justify-center pt-48">
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0, translateY: 36 }}
@@ -16,7 +16,7 @@ export function LandingPage() {
           <h1 className="text-4xl font-bold tracking-tight text-slate-800">
             Habits Mastery
           </h1>
-          <p className="px-48 mt-4 text-lg text-center text-slate-700">
+          <p className="mt-4 text-lg text-center xl:px-48 text-slate-700">
             <Balancer>
               Getting closer to your goals with the power of small habits.
             </Balancer>

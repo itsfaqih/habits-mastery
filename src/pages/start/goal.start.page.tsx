@@ -18,7 +18,11 @@ export function GoalStartPage() {
       animate={{ opacity: 1, translateX: 0 }}
       exit={{ opacity: 0, translateX: -36 }}
     >
-      <BackButton text="Back to home" to="/" />
+      <BackButton
+        text="Back to home"
+        to="/"
+        className="justify-center sm:justify-start"
+      />
 
       <form
         onSubmit={() => {
@@ -36,12 +40,14 @@ export function GoalStartPage() {
               placeholder="E.g. Become rich, lose weight, get a job"
               hintText="Add one for now, you can add more later"
               autoFocus
+              inputClassName="text-center sm:text-left"
+              hintTextClassName="text-center sm:text-left"
             />
             <IconButton
               icon={ArrowRight}
               type="submit"
               disabled={watch("title") === ""}
-              className="-mt-10"
+              className="-mt-10 sr-only sm:not-sr-only"
             />
           </div>
         </div>
